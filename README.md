@@ -1,5 +1,7 @@
 # YinwuLlamaGuard — 羊驼防卫
 
+**最新版本：v1.0.0** | [下载 Release](https://github.com/YinwuPotato/YinwuLlamaGuard/releases/tag/v1.0.0)
+
 **玩家 32 格范围内的羊驼，会自动攻击范围内的幻翼。**
 
 不需要玩家做任何事：只要你身边有羊驼、天上有幻翼，羊驼就会朝幻翼吐口水。
@@ -194,6 +196,13 @@ cd YinwuLlamaGuard && mvn clean package
 ```
 
 **依赖**：`YinwuPluginLib`（必需）、Paper API 1.21+（provided）。**无任何软依赖。**
+
+---
+
+
+## License | 许可证
+
+LGPL-3.0 —— 见 [LICENSE](LICENSE)。
 
 ---
 
