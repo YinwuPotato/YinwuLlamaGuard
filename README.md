@@ -195,7 +195,7 @@ cd YinwuLlamaGuard && mvn clean package
 自动化\compile-check.bat YinwuLlamaGuard
 ```
 
-**依赖**：`YinwuPluginLib`（必需）、Paper API 1.21+（provided）。**无任何软依赖。**
+**依赖**：`YinwuPluginLib`（**构建期**前置，已 shade 进 jar，服务器上不需单独安装）、Paper API 1.21+（provided）。**无任何软依赖。**
 
 ---
 
