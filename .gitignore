@@ -1,0 +1,23 @@
+target/
+dependency-reduced-pom.xml
+
+# IDE
+.idea/
+*.iml
+*.iws
+*.ipr
+.vscode/
+.settings/
+.classpath
+.project
+
+# 构建 / 日志
+*.class
+*.log
+*.stackdump
+out/
+build/
+
+# OS
+.DS_Store
+Thumbs.db

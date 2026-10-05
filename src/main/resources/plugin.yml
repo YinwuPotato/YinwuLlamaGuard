@@ -1,0 +1,25 @@
+name: ${project.name}
+version: '${project.version}'
+main: org.yinwu.llamaguard.YinwuLlamaGuardPlugin
+api-version: '1.21'
+description: ${project.description}
+author: Qumingjam
+website: server.yinwurealm.org
+
+# Folia 兼容 - 使用区域线程调度
+folia-supported: true
+
+commands:
+  yinwullama:
+    description: 羊驼防卫主命令
+    usage: /yinwullama <help|stats|toggle|info|reload|purge>
+    aliases: [ylg]
+    permission: yinwu.llamaguard.use
+
+permissions:
+  yinwu.llamaguard.use:
+    description: 使用 /yinwullama 的基础命令（stats / toggle）
+    default: true
+  yinwu.llamaguard.admin:
+    description: 管理操作（info / reload / purge）
+    default: op

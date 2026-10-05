@@ -1,0 +1,105 @@
+# ============================================================
+# YinwuLlamaGuard 配置
+#   玩家 32 格内的羊驼会自动攻击范围内的幻翼
+# 改完执行 /yinwullama reload 即时生效，无需重启
+# ============================================================
+
+# 总开关：false 时插件加载后只打一行日志就退出
+enabled: true
+
+# 调试日志（基类 YinwuPlugin 读取此键；开启后 debug() 才会输出）
+debug: false
+
+# ------------------------------------------------------------
+# 参战判定与目标搜索
+#   注意两个判定的"中心"不同：
+#     · 羊驼是否参战 —— 以【玩家】为中心，半径 player-radius
+#     · 打哪只幻翼   —— 以【羊驼】为中心，半径 target-radius-*
+# ------------------------------------------------------------
+defense:
+  # 玩家附近的羊驼才进入防卫模式（Bukkit 的 getNearbyEntities 是立方体判定）
+  player-radius: 32.0
+
+  # false = 立方体判定（快，Bukkit 原生）；true = 再按真实距离过滤一次（球体，略慢）
+  use-sphere-check: false
+
+  # 羊驼搜索幻翼的范围：水平 24 格，垂直单独放大到 48 格
+  # 幻翼在高空俯冲，垂直给小了会出现"就在头顶却打不到"
+  target-radius-horizontal: 24.0
+  target-radius-vertical: 48.0
+
+  # 扫描间隔（tick）。默认 5，与额外发射的冷却对齐
+  check-interval-ticks: 5
+
+  # 已定：所有羊驼都参战（野生 / 已驯服 / 商队羊驼）
+  only-tamed: false
+  include-trader-llamas: true
+
+  # 羊驼已有非幻翼目标（例如正在回击狼）时，是否不抢它的目标
+  keep-vanilla-targets: true
+
+  # 范围内没有幻翼时，是否清空插件先前给它设的幻翼目标
+  clear-when-no-phantom: false
+
+  # 性能保护：每个玩家最多带动多少只羊驼参战（0 = 不限）
+  max-llamas-per-player: 0
+
+# ------------------------------------------------------------
+# 战斗
+#   伤害保持原版不变；靠"额外发射"提高吐口水的频率
+# ------------------------------------------------------------
+combat:
+  # hybrid       = 原版 setTarget + RangedAttackGoal 照常工作，插件再按冷却补发（推荐）
+  # vanilla-ai   = 只用原版机制，插件不额外发射
+  # extra-spit   = 只由插件发射（不建议，会改变观感）
+  mode: hybrid
+
+  # 以下四项默认都不改变原版数值；只有你主动改才会生效
+  spit-damage-multiplier: 1.0
+  bonus-damage: 0.0
+  fire-ticks: 0
+
+  extra-spit:
+    # 额外发射的冷却（tick）：5 = 0.25 秒一发（原版羊驼是 40 tick）
+    cooldown-ticks: 5
+    # 投射物速度（原版羊驼用 1.5）
+    speed: 1.5
+    # 散布：0 = 精准瞄准（命中率高）；原版是 10
+    inaccuracy: 0.0
+    # 预判提前量（tick）：按幻翼当前速度外推，幻翼俯冲很快，不预判基本打空
+    lead-ticks: 10
+    # 超过该水平距离不发射（一般与 target-radius-horizontal 一致）
+    max-distance: 24.0
+    # 发射时补播原版音效（launchProjectile 自身不带音效）
+    play-sound: true
+
+  # 全局发射上限（发/秒），保护 TPS；0 = 不限
+  # 例：50 只羊驼 × 每 0.25 秒一发 = 200/秒，正好卡在这个上限
+  max-spits-per-second: 200
+
+# ------------------------------------------------------------
+# 统计与持久化（plugins/YinwuLlamaGuard/data.yml）
+# ------------------------------------------------------------
+stats:
+  enabled: true
+  # 击杀幻翼时是否提示附近的主人（默认关，避免刷屏）
+  notify-owner: false
+  # 定时落盘间隔（秒）
+  save-interval-seconds: 300
+  # 超过该天数没有再出现的羊驼记录会被清理（0 = 不清理）
+  purge-after-days: 30
+
+# ------------------------------------------------------------
+# 消息（支持 & 颜色代码）
+# ------------------------------------------------------------
+messages:
+  prefix: "&8[&eLlamaGuard&8] &r"
+  no-permission: "&c你没有权限。"
+  no-llama: "&c请先看着一只羊驼（10 格内）再执行。"
+  toggled-on: "&a已开启这只羊驼的自动防卫。"
+  toggled-off: "&7已关闭这只羊驼的自动防卫。"
+  stats: "&e这只羊驼的战绩：吐出 &f%spits% &e次，击杀幻翼 &f%kills% &e只。"
+  stats-empty: "&7这只羊驼还没有战绩记录。"
+  reloaded: "&a配置已重载。"
+  purged: "&a已清理 &f%count% &a条过期记录。"
+  notify-owner: "&e你的羊驼刚刚打死了一只幻翼！"
